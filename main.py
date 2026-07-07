@@ -1,35 +1,29 @@
 from fastapi import FastAPI
+from core.database import connect_to_mongo, close_mongo_connection
 
-from core.config import settings
-
-app = FastAPI(
-
-    title=settings.APP_NAME,
-
-    version=settings.APP_VERSION
-
+from core.database import (
+    connect_to_mongo,
+    close_mongo_connection
 )
+
+app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup():
+
+    await connect_to_mongo()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+
+    await close_mongo_connection()
 
 
 @app.get("/")
-
-def home():
-
-    return {
-
-        "message": settings.APP_NAME,
-
-        "version": settings.APP_VERSION
-
-    }
-
-
-@app.get("/health")
-
-def health():
+async def root():
 
     return {
-
-        "status": "healthy"
-
+        "message": "Customer Support AI Backend Running"
     }

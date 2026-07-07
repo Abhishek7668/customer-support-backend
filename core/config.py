@@ -11,6 +11,9 @@ class Settings:
     HOST = os.getenv("HOST")
     PORT = int(os.getenv("PORT"))
     DEBUG = os.getenv("DEBUG") == "True"
+    MONGO_URI = os.getenv("MONGO_URI")
+
+    DB_NAME = os.getenv("DB_NAME")
 
 print("Creating settings...")
 settings = Settings()
