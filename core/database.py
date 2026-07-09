@@ -11,6 +11,9 @@ class MongoDB:
 
 mongodb = MongoDB()
 
+print("MONGO_URI:", settings.MONGO_URI)
+print("DB_NAME:", settings.DB_NAME)
+
 
 async def connect_to_mongo():
 
@@ -48,3 +51,5 @@ async def close_mongo_connection():
         mongodb.client.close()
 
         print("🔒 MongoDB Connection Closed")
+def get_database():
+    return mongodb.database

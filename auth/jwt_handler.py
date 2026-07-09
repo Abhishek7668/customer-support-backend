@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta, timezone
-from jose import jwt
+from jose import jwt,JWTError
+from core.config import settings
 
-SECRET_KEY = "your_secret_key_here"
+SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -23,8 +24,12 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str):
-    return jwt.decode(
+  try:
+    payoload=jwt.decode(
         token,
         SECRET_KEY,
         algorithms=[ALGORITHM]
     )
+    return payoload
+  except JWTError:
+     return None
