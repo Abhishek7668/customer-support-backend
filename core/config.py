@@ -15,6 +15,8 @@ class Settings:
 
     DB_NAME = os.getenv("DB_NAME")
     SECRET_KEY=os.getenv("SECRET_KEY")
+    PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+    PINECONE_INDEX = os.getenv("PINECONE_INDEX")
 print("Creating settings...")
 settings = Settings()
 print("Settings created!")
