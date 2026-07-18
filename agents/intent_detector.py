@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Intent(str, Enum):
+class Intent(Enum):
 
     BILLING = "billing"
 
@@ -19,74 +19,109 @@ class Intent(str, Enum):
 class IntentDetector:
 
     billing_keywords = [
+
         "payment",
+        "paid",
         "invoice",
         "refund",
         "billing",
         "subscription",
         "premium",
         "plan"
+
     ]
 
     technical_keywords = [
+
         "login",
         "password",
-        "install",
-        "installation",
-        "bug",
         "error",
-        "crash",
-        "otp"
+        "bug",
+        "issue",
+        "install",
+        "locked",
+        "reset"
+
     ]
 
     product_keywords = [
+
         "product",
         "feature",
         "pricing",
         "price",
-        "availability",
-        "compare"
+        "compare",
+        "available"
+
     ]
 
     complaint_keywords = [
-            "complaint",
-    "complain",
-    "poor",
-    "bad",
-    "angry",
-    "frustrated",
-    "issue",
-    "dissatisfied",
-    "not happy"
+        "complain",
+        "complaint",
+        "angry",
+        "bad",
+        "worst",
+        "disappointed"
 
     ]
 
     faq_keywords = [
-        "contact",
-        "address",
+
         "office",
-        "support",
-        "company"
+        "location",
+        "contact",
+        "email",
+        "phone"
+
     ]
 
-    @classmethod
-    def detect(cls, message: str):
 
-        message = message.lower()
+    @staticmethod
+    def detect(query: str):
 
-        if any(word in message for word in cls.billing_keywords):
-            return Intent.BILLING
+        """
+        Backward compatibility
+        Returns first detected intent
+        """
 
-        elif any(word in message for word in cls.technical_keywords):
-            return Intent.TECHNICAL
+        intents = IntentDetector.detect_multiple(query)
 
-        elif any(word in message for word in cls.product_keywords):
-            return Intent.PRODUCT
+        if intents:
 
-        elif any(word in message for word in cls.complaint_keywords):
-            return Intent.COMPLAINT
-
-        elif any(word in message for word in cls.faq_keywords):
-            return Intent.FAQ
+            return intents[0]
 
         return Intent.UNKNOWN
+
+
+    @staticmethod
+    def detect_multiple(query: str):
+
+        query = query.lower()
+
+        intents = []
+
+        if any(word in query for word in IntentDetector.billing_keywords):
+
+            intents.append(Intent.BILLING)
+
+        if any(word in query for word in IntentDetector.technical_keywords):
+
+            intents.append(Intent.TECHNICAL)
+
+        if any(word in query for word in IntentDetector.product_keywords):
+
+            intents.append(Intent.PRODUCT)
+
+        if any(word in query for word in IntentDetector.complaint_keywords):
+
+            intents.append(Intent.COMPLAINT)
+
+        if any(word in query for word in IntentDetector.faq_keywords):
+
+            intents.append(Intent.FAQ)
+
+        if not intents:
+
+            intents.append(Intent.UNKNOWN)
+
+        return intents

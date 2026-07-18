@@ -3,25 +3,33 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 class EmbeddingModel:
 
-    @staticmethod
-    def get_embeddings():
+    _embeddings = None
 
-        embeddings = HuggingFaceEmbeddings(
+    @classmethod
+    def get_embeddings(cls):
 
-            model_name="sentence-transformers/all-MiniLM-L6-v2",
+        if cls._embeddings is None:
 
-            model_kwargs={
+            print("Loading Embedding Model...")
 
-                "device": "cpu"
+            cls._embeddings = HuggingFaceEmbeddings(
 
-            },
+                model_name=r"D:\HF_CACHE\hub\models--sentence-transformers--all-MiniLM-L6-v2\snapshots\1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
 
-            encode_kwargs={
+                model_kwargs={
 
-                "normalize_embeddings": True
+                    "device": "cpu",
 
-            }
+                    "local_files_only": True
 
-        )
+                },
 
-        return embeddings
+                encode_kwargs={
+
+                    "normalize_embeddings": True
+
+                }
+
+            )
+
+        return cls._embeddings

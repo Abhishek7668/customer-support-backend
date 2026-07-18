@@ -1,25 +1,24 @@
-from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-
-from core.config import settings
 from rag.embeddings import EmbeddingModel
+from core.config import settings
 
 
 class PineconeStore:
 
-    @staticmethod
-    def get_vector_store():
+    _vector_store = None
 
-        pc = Pinecone(
-            api_key=settings.PINECONE_API_KEY
-        )
+    @classmethod
+    def get_vector_store(cls):
 
-        embeddings = EmbeddingModel.get_embeddings()
+        if cls._vector_store is None:
 
-        vector_store = PineconeVectorStore(
-            index_name=settings.PINECONE_INDEX,
-            embedding=embeddings,
-            pinecone_api_key=settings.PINECONE_API_KEY
-        )
+            embeddings = EmbeddingModel.get_embeddings()
 
-        return vector_store
+            cls._vector_store = PineconeVectorStore(
+                index_name=settings.PINECONE_INDEX,
+                embedding=embeddings,
+                pinecone_api_key=settings.PINECONE_API_KEY
+            )
+
+        # 👇 Always return
+        return cls._vector_store

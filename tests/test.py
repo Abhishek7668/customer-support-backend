@@ -3,37 +3,31 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from agents.escalation import EscalationEngine
 
-from rag.loader import PDFLoader
-from rag.text_spliter import TextSplitter
-from rag.pincone_store import PineconeStore
 
-print("=" * 60)
-print("Loading PDFs...")
-print("=" * 60)
+queries = [
 
-loader = PDFLoader(r"D:\project 2\customer-support-backend\knowledge_base")
+    "My payment failed.",
 
-documents = loader.load()
+    "My payment is still not working.",
 
-print(f"Loaded Pages : {len(documents)}")
+    "Worst service. I want refund.",
 
-print("=" * 60)
-print("Chunking...")
-print("=" * 60)
+    "I am angry. This is fraud. I want manager.",
 
-chunks = TextSplitter.split_documents(documents)
+    "Everything is working."
 
-print(f"Total Chunks : {len(chunks)}")
+]
 
-print("=" * 60)
-print("Uploading to Pinecone...")
-print("=" * 60)
+for q in queries:
 
-vector_store = PineconeStore.get_vector_store()
+    print("="*70)
 
-vector_store.add_documents(chunks)
+    print(q)
 
-print("=" * 60)
-print("Upload Completed Successfully")
-print("=" * 60)
+    print(
+
+        EscalationEngine.analyze(q)
+
+    )

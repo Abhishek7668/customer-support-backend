@@ -12,26 +12,73 @@ class AgentRouter:
     @staticmethod
     def route(query: str):
 
-        intent = IntentDetector.detect(query)
+        """
+        Backward compatible
+        Returns only first matched agent
+        """
 
-        if intent == Intent.BILLING:
-            return BillingAgent.handle(query)
+        responses = AgentRouter.route_multiple(query)
 
-        elif intent == Intent.TECHNICAL:
-            return TechnicalAgent.handle(query)
+        if len(responses) == 0:
 
-        elif intent == Intent.PRODUCT:
-            return ProductAgent.handle(query)
+            return {
 
-        elif intent == Intent.COMPLAINT:
-            return ComplaintAgent.handle(query)
+                "agent": "Unknown",
 
-        elif intent == Intent.FAQ:
-            return FAQAgent.handle(query)
+                "response": "Sorry, I could not understand your request."
 
-        return {
+            }
 
-            "agent": "Unknown",
+        return responses[0]
 
-            "response": "Sorry, I could not understand your request."
-        }
+
+    @staticmethod
+    def route_multiple(query: str):
+
+        intents = IntentDetector.detect_multiple(query)
+
+        responses = []
+
+        for intent in intents:
+
+            if intent == Intent.BILLING:
+
+                responses.append(
+
+                    BillingAgent.handle(query)
+
+                )
+
+            elif intent == Intent.TECHNICAL:
+
+                responses.append(
+
+                    TechnicalAgent.handle(query)
+
+                )
+
+            elif intent == Intent.PRODUCT:
+
+                responses.append(
+
+                    ProductAgent.handle(query)
+
+                )
+
+            elif intent == Intent.COMPLAINT:
+
+                responses.append(
+
+                    ComplaintAgent.handle(query)
+
+                )
+
+            elif intent == Intent.FAQ:
+
+                responses.append(
+
+                    FAQAgent.handle(query)
+
+                )
+
+        return responses

@@ -17,6 +17,7 @@ class Settings:
     SECRET_KEY=os.getenv("SECRET_KEY")
     PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
     PINECONE_INDEX = os.getenv("PINECONE_INDEX")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 print("Creating settings...")
 settings = Settings()
 print("Settings created!")
