@@ -42,29 +42,36 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup():
 
-    print("=" * 60)
+    #print("=" * 60)
     print("Starting Customer Support AI Backend")
-    print("=" * 60)
+    #print("=" * 60)
+    :
 
-    # MongoDB
+    print("Starting Backend...")
+
     await connect_to_mongo()
+
     print("MongoDB Connected")
 
-    # Embedding Model
-    EmbeddingModel.get_embeddings()
-    print("Embedding Model Loaded")
+    # MongoDB
+   # await connect_to_mongo()
+   # print("MongoDB Connected")
+
+    ## Embedding Model
+   # EmbeddingModel.get_embeddings()
+   # print("Embedding Model Loaded")
 
     # Pinecone
-    PineconeStore.get_vector_store()
-    print("Pinecone Connected")
+   # PineconeStore.get_vector_store()
+   # print("Pinecone Connected")
 
     # Gemini
-    GeminiClient.get_model()
-    print("Gemini Loaded")
+   # GeminiClient.get_model()
+   #print("Gemini Loaded")
 
-    print("=" * 60)
-    print("Backend Ready")
-    print("=" * 60)
+   #print("=" * 60)
+   # print("Backend Ready")
+   # print("=" * 60)
 
 
 @app.on_event("shutdown")
