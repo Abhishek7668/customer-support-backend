@@ -104,9 +104,68 @@
 
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from core.database import connect_to_mongo, close_mongo_connection
 
+app = FastAPI(
+    title="Customer Support AI Backend"
+)
+
+# -----------------------------
+# CORS
+# -----------------------------
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# -----------------------------
+# Startup
+# -----------------------------
+@app.on_event("startup")
+async def startup():
+
+    print("=" * 60)
+    print("Starting Customer Support AI Backend")
+    print("=" * 60)
+
+    try:
+        await connect_to_mongo()
+        print("✅ MongoDB Connected Successfully")
+    except Exception as e:
+        print(f"❌ MongoDB Error: {e}")
+        raise
+
+    print("=" * 60)
+    print("Backend Ready")
+    print("=" * 60)
+
+
+# -----------------------------
+# Shutdown
+# -----------------------------
+@app.on_event("shutdown")
+async def shutdown():
+
+    await close_mongo_connection()
+    print("MongoDB Closed")
+
+
+# -----------------------------
+# Health Check
+# -----------------------------
 @app.get("/")
-def root():
-    return {"status": "ok"}
+async def root():
+    return {
+        "status": "ok",
+        "message": "Backend Running"
+    }
