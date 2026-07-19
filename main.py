@@ -115,6 +115,7 @@ from router.history import router as history_router
 from router.ticket import router as ticket_router
 from router.analytics import router as analytics_router
 from router.knowledge import router as knowledge_router
+print("Knowledg IMport success")
 
 # Chat Router (abhi disable)
 # from router.chat import router as chat_router
@@ -171,7 +172,7 @@ app.include_router(user_router)
 app.include_router(history_router)
 app.include_router(ticket_router)
 app.include_router(analytics_router)
-app.include_router(knowledge_router)
+#app.include_router(knowledge_router)
 
 # Last step
 # app.include_router(chat_router)
