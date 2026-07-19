@@ -37,23 +37,30 @@
 #             "message": result["message"]
 #         }
 
-from knowledge.loader import PDFLoader
+# from knowledge.loader import PDFLoader
 
 
-class KnowledgeService:
+# class KnowledgeService:
 
-    @staticmethod
-    def upload(pdf_path):
-        print("========== KnowledgeService.upload() ==========")
-        print("PDF Path:", pdf_path)
+#     @staticmethod
+#     def upload(pdf_path):
+#         print("========== KnowledgeService.upload() ==========")
+#         print("PDF Path:", pdf_path)
 
-        # Load PDF
-        documents = PDFLoader.load(pdf_path)
+#         # Load PDF
+#         documents = PDFLoader.load(pdf_path)
 
-        print(f"✅ PDF Loaded Successfully")
-        print(f"Documents Count: {len(documents)}")
+#         print(f"✅ PDF Loaded Successfully")
+#         print(f"Documents Count: {len(documents)}")
 
-        return {
-            "success": True,
-            "documents": len(documents)
-        }
+#         return {
+#             "success": True,
+#             "documents": len(documents)
+#         }
+
+documents = PDFLoader.load(pdf_path)
+
+return {
+    "success": True,
+    "documents": len(documents)
+}
