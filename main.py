@@ -172,7 +172,7 @@ app.include_router(user_router)
 app.include_router(history_router)
 app.include_router(ticket_router)
 app.include_router(analytics_router)
-#app.include_router(knowledge_router)
+app.include_router(knowledge_router)
 
 # Last step
 # app.include_router(chat_router)
