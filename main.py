@@ -123,6 +123,26 @@ from router.ticket import router as ticket_router
 # from router.analytics import router as analytics_router
 # from router.knowledge import router as knowledge_router
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from core.database import connect_to_mongo, close_mongo_connection
+
+# -----------------------------
+# Safe Routers
+# -----------------------------
+from router.auth import router as auth_router
+from router.user import router as user_router
+from router.history import router as history_router
+from router.ticket import router as ticket_router
+from router.analytics import router as analytics_router
+
+# -----------------------------
+# AI Routers (Temporarily Disabled)
+# -----------------------------
+# from router.knowledge import router as knowledge_router
+# from router.chat import router as chat_router
+
 app = FastAPI(
     title="Customer Support AI Backend",
     version="1.0.0"
@@ -134,7 +154,6 @@ app = FastAPI(
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # Deployment ke baad add karna
     # "https://your-vercel-app.vercel.app",
 ]
 
@@ -173,7 +192,6 @@ async def startup():
 # -----------------------------
 @app.on_event("shutdown")
 async def shutdown():
-
     await close_mongo_connection()
     print("MongoDB Closed")
 
@@ -196,8 +214,8 @@ app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(history_router)
 app.include_router(ticket_router)
+app.include_router(analytics_router)
 
-# Uncomment one by one after testing
-# app.include_router(chat_router)
-# app.include_router(analytics_router)
+# Uncomment after testing
 # app.include_router(knowledge_router)
+# app.include_router(chat_router)
