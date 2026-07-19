@@ -26,8 +26,15 @@ class PDFLoader:
 
         for page in reader.pages:
             text = page.extract_text() or ""
+
             documents.append(
-                Document(page_content=text)
+                Document(
+                    page_content=text,
+                    metadata={
+                        "source": pdf_path,
+                        "page": len(documents) + 1
+                    }
+                )
             )
 
         return documents
