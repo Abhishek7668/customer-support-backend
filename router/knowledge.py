@@ -58,6 +58,8 @@
 #         **result
 #     }
 
+import os
+import shutil
 from fastapi import APIRouter, UploadFile, File
 
 router = APIRouter(
@@ -65,9 +67,19 @@ router = APIRouter(
     tags=["Knowledge"]
 )
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 @router.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
+
+    pdf_path = os.path.join(UPLOAD_FOLDER, file.filename)
+
+    with open(pdf_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
     return {
         "success": True,
-        "filename": file.filename
+        "filename": file.filename,
+        "path": pdf_path
     }
