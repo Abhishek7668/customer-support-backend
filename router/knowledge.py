@@ -1,102 +1,59 @@
 import os
 import shutil
-
 from pathlib import Path
 
-from fastapi import APIRouter
-from fastapi import UploadFile
-from fastapi import File
-from fastapi import HTTPException
+print("========== 1. knowledge.py loaded ==========")
+
+from fastapi import APIRouter, UploadFile, File, HTTPException
+
+print("========== 2. FastAPI imported ==========")
 
 from services.knowledge_service import KnowledgeService
 
+print("========== 3. KnowledgeService imported ==========")
 
 router = APIRouter(
-
     prefix="/knowledge",
-
     tags=["Knowledge Base"]
-
 )
-
 
 UPLOAD_FOLDER = "knowledge_base"
 
 os.makedirs(
-
     UPLOAD_FOLDER,
-
     exist_ok=True
-
 )
+
+print("========== 4. Upload folder ready ==========")
 
 
 @router.post("/upload")
+async def upload_pdf(file: UploadFile = File(...)):
 
-async def upload_pdf(
-
-    file: UploadFile = File(...)
-
-):
-
-    # ----------------------------
-    # Validate PDF
-    # ----------------------------
+    print("========== Upload API Called ==========")
 
     if not file.filename.lower().endswith(".pdf"):
-
         raise HTTPException(
-
             status_code=400,
-
             detail="Only PDF files are allowed."
-
         )
-
-    # ----------------------------
-    # Save PDF
-    # ----------------------------
 
     pdf_path = os.path.join(
-
         UPLOAD_FOLDER,
-
         file.filename
-
     )
 
-    with open(
+    with open(pdf_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-        pdf_path,
+    print("========== PDF Saved ==========")
 
-        "wb"
+    result = KnowledgeService.upload(pdf_path)
 
-    ) as buffer:
-
-        shutil.copyfileobj(
-
-            file.file,
-
-            buffer
-
-        )
-
-    # ----------------------------
-    # Upload Knowledge
-    # ----------------------------
-
-    result = KnowledgeService.upload(
-
-        pdf_path
-
-    )
+    print("========== Upload Completed ==========")
 
     return {
-
         "success": True,
-
         "filename": Path(pdf_path).name,
-
         **result
-
     }

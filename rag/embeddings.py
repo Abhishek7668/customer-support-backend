@@ -1,4 +1,8 @@
+print("========== 15. embeddings.py loaded ==========")
+
 from langchain_huggingface import HuggingFaceEmbeddings
+
+print("========== 16. HuggingFace imported ==========")
 
 
 class EmbeddingModel:
@@ -8,9 +12,9 @@ class EmbeddingModel:
     @classmethod
     def get_embeddings(cls):
 
-        if cls._embeddings is None:
+        print("========== Loading Embedding Model ==========")
 
-            print("Loading Embedding Model...")
+        if cls._embeddings is None:
 
             cls._embeddings = HuggingFaceEmbeddings(
 
@@ -25,5 +29,7 @@ class EmbeddingModel:
                 }
 
             )
+
+            print("========== Embedding Model Loaded ==========")
 
         return cls._embeddings
