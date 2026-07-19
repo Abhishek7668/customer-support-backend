@@ -60,7 +60,9 @@
 
 import os
 import shutil
+
 from fastapi import APIRouter, UploadFile, File
+from services.knowledge_service import KnowledgeService
 
 router = APIRouter(
     prefix="/knowledge",
@@ -70,16 +72,26 @@ router = APIRouter(
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 @router.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
+    try:
+        # Save uploaded PDF
+        pdf_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
-    pdf_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        with open(pdf_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    with open(pdf_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        print(f"✅ PDF Saved: {pdf_path}")
 
-    return {
-        "success": True,
-        "filename": file.filename,
-        "path": pdf_path
-    }
+        # Call KnowledgeService
+        result = KnowledgeService.upload(pdf_path)
+
+        return result
+
+    except Exception as e:
+        print("❌ Upload Error:", str(e))
+        return {
+            "success": False,
+            "error": str(e)
+        }
