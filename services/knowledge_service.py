@@ -38,6 +38,7 @@
 #         }
 
 from knowledge.loader import PDFLoader
+from knowledge.chunker import DocumentChunker
 
 
 class KnowledgeService:
@@ -49,7 +50,6 @@ class KnowledgeService:
 
             print("=" * 60)
             print("KnowledgeService Started")
-            print(f"PDF Path : {pdf_path}")
             print("=" * 60)
 
             # Load PDF
@@ -57,20 +57,27 @@ class KnowledgeService:
 
             print(f"Documents Loaded : {len(documents)}")
 
+            # Chunk PDF
+            chunks = DocumentChunker.split(documents)
+
+            print(f"Chunks Created : {len(chunks)}")
+
             return {
                 "success": True,
-                "message": "PDF Loaded Successfully",
-                "total_documents": len(documents)
+                "documents": len(documents),
+                "chunks": len(chunks)
             }
 
         except Exception as e:
 
             print("=" * 60)
             print("KnowledgeService Error")
-            print(str(e))
+            print(e)
             print("=" * 60)
 
             return {
                 "success": False,
                 "message": str(e)
             }
+
+
