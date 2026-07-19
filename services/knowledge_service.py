@@ -37,30 +37,40 @@
 #             "message": result["message"]
 #         }
 
-# from knowledge.loader import PDFLoader
+from knowledge.loader import PDFLoader
 
 
-# class KnowledgeService:
+class KnowledgeService:
 
-#     @staticmethod
-#     def upload(pdf_path):
-#         print("========== KnowledgeService.upload() ==========")
-#         print("PDF Path:", pdf_path)
+    @staticmethod
+    def upload(pdf_path: str):
 
-#         # Load PDF
-#         documents = PDFLoader.load(pdf_path)
+        try:
 
-#         print(f"✅ PDF Loaded Successfully")
-#         print(f"Documents Count: {len(documents)}")
+            print("=" * 60)
+            print("KnowledgeService Started")
+            print(f"PDF Path : {pdf_path}")
+            print("=" * 60)
 
-#         return {
-#             "success": True,
-#             "documents": len(documents)
-#         }
+            # Load PDF
+            documents = PDFLoader.load(pdf_path)
 
-documents = PDFLoader.load(pdf_path)
+            print(f"Documents Loaded : {len(documents)}")
 
-return {
-    "success": True,
-    "documents": len(documents)
-}
+            return {
+                "success": True,
+                "message": "PDF Loaded Successfully",
+                "total_documents": len(documents)
+            }
+
+        except Exception as e:
+
+            print("=" * 60)
+            print("KnowledgeService Error")
+            print(str(e))
+            print("=" * 60)
+
+            return {
+                "success": False,
+                "message": str(e)
+            }
