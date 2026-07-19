@@ -100,18 +100,37 @@
 # app.include_router(ticket_router)
 # app.include_router(knowledge_router)
 
+print("STEP 1")
+
 from fastapi import FastAPI
+print("STEP 2")
+
 from fastapi.middleware.cors import CORSMiddleware
+print("STEP 3")
 
 from core.database import connect_to_mongo, close_mongo_connection
+print("STEP 4")
 
 from router.auth import router as auth_router
+print("STEP 5")
+
 from router.user import router as user_router
+print("STEP 6")
+
 from router.chat import router as chat_router
+print("STEP 7")
+
 from router.history import router as history_router
+print("STEP 8")
+
 from router.analytics import router as analytics_router
+print("STEP 9")
+
 from router.ticket import router as ticket_router
+print("STEP 10")
+
 from router.knowledge import router as knowledge_router
+print("STEP 11")
 
 app = FastAPI(
     title="Customer Support AI Backend"
