@@ -87,7 +87,7 @@ uvicorn main:app --reload
 
 Swagger:
 
-http://localhost:8000/docs
+https://customer-support-backend-1oea.onrender.com
 
 ------------------------------------------------------------------------
 
